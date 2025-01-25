@@ -12,10 +12,10 @@ st.title('Volvo Production Dashboard')
 st.sidebar.image('equinor_logo.png',caption='Equinor VOLVE field',)
 
 op_well=df[df['FLOW_KIND']=='production']['WELL_BORE_CODE'].unique()
-sel_well_prod=st.sidebar.radio('Wells',op_well)
+sel_well_prod=st.sidebar.radio('Production Wells',op_well)
 
 inj_well=df[df['FLOW_KIND']=='injection']['WELL_BORE_CODE'].unique()
-sel_well_inj=st.sidebar.radio('Wells',inj_well)
+sel_well_inj=st.sidebar.radio('Injection Wells',inj_well)
 
 
 # start_date = date(2008, 1, 1)
