@@ -7,6 +7,7 @@ from datetime import datetime, date
 
 df = pd.read_csv('volvo_well_data/Volvo_data_csv.csv')
 
+st.set_page_config(layout="wide")
 st.title('Volvo Production Dashboard')
 
 st.sidebar.image('equinor_logo.png',caption='Equinor VOLVE field',)
@@ -62,7 +63,7 @@ df['cum_water'] = df['BORE_WAT_VOL'].cumsum()
 df['cum_oil'] = df['cum_oil'].fillna(method='ffill')  # Forward fill
 df['cum_water'] = df['cum_water'].fillna(method='ffill')  # Forward fill
 
-fig, ax = plt.subplots(figsize=(18, 8))
+fig, ax = plt.subplots(figsize=(16, 6))
 ax.plot(df['DATEPRD'],df['cum_oil'],label='Cumulative Oil', color='Brown')
 ax.plot(df['DATEPRD'], df['cum_water'], label='Cumulative Water', color='blue')
 # ax.plot(df['DATEPRD'], df['cum_gas'], label='Cumulative gas', color='red')
@@ -99,7 +100,7 @@ st.write("")
 well_data = {f"well_{i}": df[df['WELL_BORE_CODE'] == op_well[i]] for i in range(len(op_well))}
 print(well_data)
 
-fig3,(ax3,ax4)=plt.subplots(2,1,figsize=(12,10),sharex=True)
+fig3,(ax3,ax4)=plt.subplots(1,2,figsize=(12,4),sharex=True)
 
 for i, (well_name, well_df) in enumerate(well_data.items()):
     ax3.plot(well_df['DATEPRD'], well_df['BORE_OIL_VOL'],label=f"Well {op_well[i]}")
@@ -114,8 +115,8 @@ ax3.set_ylabel('Oil Volume (BORE_OIL_VOL)', fontsize=12)
 ax4.set_ylabel('Wat Volume (BORE_WAT_VOL)', fontsize=12)
 ax3.grid(visible=True, linestyle="--", alpha=0.8)
 ax4.grid(visible=True, linestyle="--", alpha=0.8)
-ax3.legend()
-ax4.legend()
+ax3.legend(prop={'size': 6})
+ax4.legend(prop={'size': 6})
 
 fig3.patch.set_facecolor('#f0f0f0')
 ax3.set_facecolor('#e0e0e0')
@@ -159,7 +160,23 @@ st.write("")
 st.write("")
 st.write("")
 st.write("")
-st.write("Indivisual well visualization")
+st.markdown(
+    """
+    <style>
+    .center-text{
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    </style>
+
+    <div class="center-text">
+        Individual Well Oil and Water Production
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+st.write("")
 
 
 # # # Well - wise production plot
@@ -168,7 +185,7 @@ fil_df_prod = df[(df['WELL_BORE_CODE'] == sel_well_prod) & (df['FLOW_KIND'] == '
 avg_prod = fil_df_prod['BORE_OIL_VOL'].rolling(50).mean()
 avg_wat_prod = fil_df_prod['BORE_WAT_VOL'].rolling(50).mean()
 
-fig1,ax1=plt.subplots(figsize=(12,8),sharex=True)
+fig1,ax1=plt.subplots(figsize=(13,6),sharex=True)
 
 # Plot for the producing well
 ax1.plot(fil_df_prod['DATEPRD'], avg_prod, label=f"Oil Production, Well: {sel_well_prod}", color="brown", linewidth=2)
@@ -196,13 +213,29 @@ st.write("")
 st.write("")
 st.write("")
 st.write("")
-st.write("Plot of Indivisual Injection Well")
+st.markdown(
+    """
+    <style>
+    .center-text{
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    </style>
+
+    <div class="center-text">
+        Plot of Injection well
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+st.write("")
 
 # # # Injection well plot
 fil_df_inj = df[(df['WELL_BORE_CODE'] == sel_well_inj) & (df['FLOW_KIND'] == 'injection')]
 avg_inj = fil_df_inj['BORE_WI_VOL'].fillna(method='ffill').rolling(50).mean()
 
-fig2,ax2=plt.subplots(figsize=(12,8),sharex=True)
+fig2,ax2=plt.subplots(figsize=(16,6),sharex=True)
 
 # Plot for the injecting well
 ax2.plot(fil_df_inj['DATEPRD'],avg_inj, label=f"Injecting Well: {sel_well_inj}", color="green")
@@ -224,6 +257,26 @@ st.pyplot(fig2)
 
 
 
+st.write("")
+st.write("")
+st.write("")
+st.markdown(
+    """
+    <style>
+    .center-text{
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    </style>
+
+    <div class="center-text">
+        Decline Curve Analysis
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+st.write("")
 
 # # # well decilne curve analysis
 sel_well = st.selectbox("Select a Well", op_well)
@@ -330,7 +383,7 @@ with col3:
     st.write(f"Test MSE: {mse_test_harm:.4f}")
 
 
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(14, 6))
 
 ax.scatter(train_time,train_prod_rate,color='teal',label='train data',marker='^',s=25)
 ax.plot(train_time,train_prod_rate,color='teal',label='train data')
