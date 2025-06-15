@@ -1,7 +1,7 @@
-streamlit
 pandas
 numpy
 matplotlib
-plotly
-datetime
+seaborn
+scikit-learn
 scipy
+tensorflow
