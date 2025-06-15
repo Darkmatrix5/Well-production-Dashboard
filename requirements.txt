@@ -4,4 +4,4 @@ matplotlib
 seaborn
 scikit-learn
 scipy
-tensorflow
+tensorflow==2.15.0
