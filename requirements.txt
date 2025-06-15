@@ -6,3 +6,4 @@ scikit-learn
 scipy
 tensorflow
 plotly
+ml-dtypes==0.3.2
